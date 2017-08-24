@@ -1,10 +1,12 @@
-package home.liuxl.per.godriving.service;
+package per.liuxl.home.godriving.service;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
+
+import junit.framework.Assert;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,7 +21,8 @@ import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLServerSocketFactory;
 
-import home.liuxl.per.godriving.R;
+import per.liuxl.home.godriving.R;
+import per.liuxl.home.godriving.model.Server;
 
 /**
  * Created by Liuxl on 2017/8/23.
@@ -27,13 +30,13 @@ import home.liuxl.per.godriving.R;
 
 public class ServerService extends Service {
 
-    private static final String TAG = CenterService.class.getSimpleName();
+    private static final String TAG = ServerService.class.getSimpleName();
     private static final int  SERVER_PORT = 4567;
-    SoudboxServer soudboxServer;
+    Server soudboxServer;
     @Override
     public void onCreate() {
         super.onCreate();
-        soudboxServer = new SoudboxServer(SERVER_PORT,this);
+        soudboxServer = new Server(SERVER_PORT,this);
         Log.i(TAG,"create server");
         new Thread(new Runnable() {
             @Override

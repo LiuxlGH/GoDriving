@@ -1,4 +1,4 @@
-package home.liuxl.per.godriving;
+package per.liuxl.home.godriving;
 
 import org.junit.Test;
 

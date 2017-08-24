@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="home.liuxl.per.godriving">
+    package="per.liuxl.home.godriving">
 
     <application
         android:allowBackup="true"

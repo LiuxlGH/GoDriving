@@ -1,8 +1,8 @@
-package home.liuxl.per.godriving.ui.activity;
+package per.liuxl.home.godriving.ui.activity;
 
 import android.support.v7.app.AppCompatActivity;
 
-import home.liuxl.per.godriving.presenter.BasePresenter;
+import per.liuxl.home.godriving.presenter.BasePresenter;
 
 /**
  * Created by Liuxl on 2017/8/23.

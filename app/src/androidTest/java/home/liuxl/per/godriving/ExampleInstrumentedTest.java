@@ -1,4 +1,4 @@
-package home.liuxl.per.godriving;
+package per.liuxl.home.godriving;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("home.liuxl.per.godriving", appContext.getPackageName());
+        assertEquals("per.liuxl.home.godriving", appContext.getPackageName());
     }
 }
