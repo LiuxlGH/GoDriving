@@ -1,4 +1,4 @@
-package per.liuxl.home.godriving.ui.fragment;
+package com.liuxl.godriving.ui.fragment;
 
 import android.support.v4.app.Fragment;
 

@@ -1,10 +1,13 @@
-package per.liuxl.home.godriving.service;
+package com.liuxl.godriving.service;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
+
+import com.liuxl.godriving.R;
+import com.liuxl.godriving.model.Server;
 
 import junit.framework.Assert;
 
@@ -21,8 +24,6 @@ import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLServerSocketFactory;
 
-import per.liuxl.home.godriving.R;
-import per.liuxl.home.godriving.model.Server;
 
 /**
  * Created by Liuxl on 2017/8/23.

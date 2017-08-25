@@ -1,7 +1,8 @@
-package per.liuxl.home.godriving.model;
+package com.liuxl.godriving.model;
+
+import com.liuxl.godriving.service.ServerService;
 
 import fi.iki.elonen.NanoHTTPD;
-import per.liuxl.home.godriving.service.ServerService;
 
 /**
  * Created by Liuxl on 2017/8/23.
