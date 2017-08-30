@@ -67,9 +67,11 @@ public class MainActivity extends BaseActivity implements SpeechSynthesizerListe
         // 设置语音合成状态监听器
         mSpeechSynthesizer.setSpeechSynthesizerListener(this);
         // 设置在线语音合成授权，需要填入从百度语音官网申请的api_key和secret_key
-        mSpeechSynthesizer.setApiKey("your_api_key", "your_secret_key");
+        String your_api_key = "mlq0DyIA3ydUYxzLSIeKyCHS";
+        String your_secret_key = "86376826e9662758703b8a32d260e290";
+        mSpeechSynthesizer.setApiKey(your_api_key, your_secret_key);
         // 设置离线语音合成授权，需要填入从百度语音官网申请的app_id
-        mSpeechSynthesizer.setAppId("your_app_id");
+        mSpeechSynthesizer.setAppId("10045784");
         // 设置语音合成文本模型文件
         mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_TEXT_MODEL_FILE, "your_txt_file_path");
         // 设置语音合成声音模型文件
