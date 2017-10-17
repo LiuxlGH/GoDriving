@@ -1,9 +1,13 @@
 package com.liuxl.godriving.ui.activity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +20,8 @@ import com.baidu.tts.client.SpeechSynthesizer;
 import com.baidu.tts.client.SpeechSynthesizerListener;
 import com.baidu.tts.client.TtsMode;
 import com.liuxl.godriving.R;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,6 +43,7 @@ public class MainActivity extends BaseActivity implements SpeechSynthesizerListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        initPermission();
         startTTS();
         handler.postDelayed(new Runnable() {
             @Override
@@ -75,7 +82,7 @@ public class MainActivity extends BaseActivity implements SpeechSynthesizerListe
         String your_secret_key = "86376826e9662758703b8a32d260e290";
         mSpeechSynthesizer.setApiKey(your_api_key, your_secret_key);
         // 设置离线语音合成授权，需要填入从百度语音官网申请的app_id
-        mSpeechSynthesizer.setAppId("10045784");
+//        mSpeechSynthesizer.setAppId("10045784");
         // 设置语音合成文本模型文件
         //mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_TEXT_MODEL_FILE, "your_txt_file_path");
         // 设置语音合成声音模型文件
@@ -83,7 +90,7 @@ public class MainActivity extends BaseActivity implements SpeechSynthesizerListe
         // 设置语音合成声音授权文件
         //mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_LICENCE_FILE, "your_licence_path");
         // 获取语音合成授权信息
-        AuthInfo authInfo = mSpeechSynthesizer.auth(TtsMode.MIX);
+        AuthInfo authInfo = mSpeechSynthesizer.auth(TtsMode.ONLINE);
         // 判断授权信息是否正确，如果正确则初始化语音合成器并开始语音合成，如果失败则做错误处理
         if (authInfo.isSuccess()) {
             mSpeechSynthesizer.initTts(TtsMode.MIX);
@@ -136,5 +143,31 @@ public class MainActivity extends BaseActivity implements SpeechSynthesizerListe
         handler.removeCallbacksAndMessages(null);
         main = null;
         Log.e("lxl", "destroy");
+    }
+    /**
+     * android 6.0 以上需要动态申请权限
+     */
+    private void initPermission() {
+        String permissions[] = {Manifest.permission.RECORD_AUDIO,
+                Manifest.permission.ACCESS_NETWORK_STATE,
+                Manifest.permission.INTERNET,
+                Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+        };
+        ArrayList<String> toApplyList = new ArrayList<String>();
+        for (String perm :permissions){
+            if (PackageManager.PERMISSION_GRANTED != ContextCompat.checkSelfPermission(this, perm)) {
+                toApplyList.add(perm);
+                //进入到这里代表没有权限.
+            }
+        }
+        String tmpList[] = new String[toApplyList.size()];
+        if (!toApplyList.isEmpty()){
+            ActivityCompat.requestPermissions(this, toApplyList.toArray(tmpList), 123);
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        // 此处为android 6.0以上动态授权的回调，用户自行实现。
     }
 }

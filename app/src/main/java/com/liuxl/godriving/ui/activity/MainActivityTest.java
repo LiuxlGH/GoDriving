@@ -133,19 +133,19 @@ public class MainActivityTest  extends AppCompatActivity implements SpeechSynthe
         // 设置context
         mSpeechSynthesizer.setContext(this);
         // 设置语音合成状态监听器
-        mSpeechSynthesizer.setSpeechSynthesizerListener(this);
-        // 设置在线语音合成授权，需要填入从百度语音官网申请的api_key和secret_key
-        mSpeechSynthesizer.setApiKey("hlwP1QNBqLmBHLHkZBz85DPB", "60b9b7007a0077a6aede427b2b4ad298");
-        // 设置离线语音合成授权，需要填入从百度语音官网申请的app_id
-        mSpeechSynthesizer.setAppId("8317228");
-        //设置网络模式
-        mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_MIX_MODE, SpeechSynthesizer.MIX_MODE_DEFAULT);
-        // 设置语音合成文本模型文件
-        mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_TEXT_MODEL_FILE, mSampleDirPath + "/" + TEXT_MODEL_NAME);
-        // 设置语音合成声音模型文件
-        mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_SPEECH_MODEL_FILE, mSampleDirPath + "/" + SPEECH_FEMALE_MODEL_NAME);
-        // 设置语音合成声音授权文件
-//        mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_LICENCE_FILE, mSampleDirPath + "/" + LICENSE_FILE_NAME);
+//        mSpeechSynthesizer.setSpeechSynthesizerListener(this);
+//        // 设置在线语音合成授权，需要填入从百度语音官网申请的api_key和secret_key
+//        mSpeechSynthesizer.setApiKey("hlwP1QNBqLmBHLHkZBz85DPB", "60b9b7007a0077a6aede427b2b4ad298");
+//        // 设置离线语音合成授权，需要填入从百度语音官网申请的app_id
+//        mSpeechSynthesizer.setAppId("8317228");
+//        //设置网络模式
+//        mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_MIX_MODE, SpeechSynthesizer.MIX_MODE_DEFAULT);
+//        // 设置语音合成文本模型文件
+//        mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_TEXT_MODEL_FILE, mSampleDirPath + "/" + TEXT_MODEL_NAME);
+//        // 设置语音合成声音模型文件
+//        mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_SPEECH_MODEL_FILE, mSampleDirPath + "/" + SPEECH_FEMALE_MODEL_NAME);
+//        // 设置语音合成声音授权文件
+////        mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_LICENCE_FILE, mSampleDirPath + "/" + LICENSE_FILE_NAME);
         // 获取语音合成授权信息
         AuthInfo authInfo = mSpeechSynthesizer.auth(TtsMode.MIX);
         // 判断授权信息是否正确，如果正确则初始化语音合成器并开始语音合成，如果失败则做错误处理
