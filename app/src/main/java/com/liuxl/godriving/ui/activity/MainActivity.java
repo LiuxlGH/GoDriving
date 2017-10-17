@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -45,14 +46,17 @@ public class MainActivity extends BaseActivity implements SpeechSynthesizerListe
             }
         }, 2000);
 
-        btnTest.setOnClickListener((view)->{
-            // 获取语音合成授权信息
-            AuthInfo authInfo = mSpeechSynthesizer.auth(TtsMode.MIX);
-            if (authInfo.isSuccess()) {
-                mSpeechSynthesizer.initTts(TtsMode.MIX);
-                mSpeechSynthesizer.speak("1385948792526");
-            } else {
-                Toast.makeText(MainActivity.this,"授权失败",Toast.LENGTH_LONG).show();
+        btnTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 获取语音合成授权信息
+                AuthInfo authInfo = mSpeechSynthesizer.auth(TtsMode.MIX);
+                if (authInfo.isSuccess()) {
+                    mSpeechSynthesizer.initTts(TtsMode.MIX);
+                    mSpeechSynthesizer.speak("1385948792526");
+                } else {
+                    Toast.makeText(MainActivity.this,"授权失败",Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
@@ -73,11 +77,11 @@ public class MainActivity extends BaseActivity implements SpeechSynthesizerListe
         // 设置离线语音合成授权，需要填入从百度语音官网申请的app_id
         mSpeechSynthesizer.setAppId("10045784");
         // 设置语音合成文本模型文件
-        mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_TEXT_MODEL_FILE, "your_txt_file_path");
+        //mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_TEXT_MODEL_FILE, "your_txt_file_path");
         // 设置语音合成声音模型文件
-        mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_SPEECH_MODEL_FILE, "your_speech_file_path");
+        //mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_SPEECH_MODEL_FILE, "your_speech_file_path");
         // 设置语音合成声音授权文件
-        mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_LICENCE_FILE, "your_licence_path");
+        //mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_LICENCE_FILE, "your_licence_path");
         // 获取语音合成授权信息
         AuthInfo authInfo = mSpeechSynthesizer.auth(TtsMode.MIX);
         // 判断授权信息是否正确，如果正确则初始化语音合成器并开始语音合成，如果失败则做错误处理
@@ -86,6 +90,7 @@ public class MainActivity extends BaseActivity implements SpeechSynthesizerListe
             mSpeechSynthesizer.speak("1385948792526");
         } else {
             // 授权失败
+            Toast.makeText(this,"auth failed!!",Toast.LENGTH_LONG).show();
         }
 
     }
