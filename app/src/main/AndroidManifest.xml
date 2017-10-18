@@ -23,6 +23,15 @@
         <activity android:name=".ui.activity.SettingActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
+        <!-- begin: baidu speech sdk-->
+        <!-- 请填写应用实际的APP_ID -->
+        <meta-data android:name="com.baidu.speech.APP_ID" android:value="10045784"/>
+        <!-- 请填写应用实际的API_KEY -->
+        <meta-data android:name="com.baidu.speech.API_KEY" android:value="mlq0DyIA3ydUYxzLSIeKyCHS"/>
+        <!-- 请填写应用实际的SECRET_KEY -->
+        <meta-data android:name="com.baidu.speech.SECRET_KEY" android:value="86376826e9662758703b8a32d260e290"/>
+        <!--<service android:name="com.baidu.speech.VoiceRecognitionService" android:exported="false" ></service>-->
+
         <uses-permission android:name="android.permission.INTERNET" />
         <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
         <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
