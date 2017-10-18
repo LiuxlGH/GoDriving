@@ -1,10 +1,13 @@
 package com.liuxl.godriving.ui.activity;
 
 import android.Manifest;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -20,6 +23,7 @@ import com.baidu.tts.client.SpeechSynthesizer;
 import com.baidu.tts.client.SpeechSynthesizerListener;
 import com.baidu.tts.client.TtsMode;
 import com.liuxl.godriving.R;
+import com.liuxl.godriving.service.NotificationService;
 import com.liuxl.godriving.util.SPKit;
 
 import java.util.ArrayList;
@@ -47,6 +51,25 @@ public class MainActivity extends BaseActivity implements SpeechSynthesizerListe
         initPermission();
         ButterKnife.bind(this);
         startTTS();
+
+        if (Build.VERSION.SDK_INT >= 23) {
+            if(!Settings.canDrawOverlays(this)) {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+                startActivity(intent);
+                return;
+            } else {
+                //绘ui代码, 这里说明6.0系统已经有权限了
+            }
+        } else {
+            //绘ui代码,这里android6.0以下的系统直接绘出即可
+        }
+
+        PackageManager pm = getPackageManager();
+        pm.setComponentEnabledSetting(new ComponentName(this,NotificationService.class),
+                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,PackageManager.DONT_KILL_APP);
+        pm.setComponentEnabledSetting(new ComponentName(this,NotificationService.class),
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,PackageManager.DONT_KILL_APP);
+
 //        handler.postDelayed(new Runnable() {
 //            @Override
 //            public void run() {
