@@ -20,6 +20,7 @@ import com.baidu.tts.client.SpeechSynthesizer;
 import com.baidu.tts.client.SpeechSynthesizerListener;
 import com.baidu.tts.client.TtsMode;
 import com.liuxl.godriving.R;
+import com.liuxl.godriving.util.SPKit;
 
 import java.util.ArrayList;
 
@@ -42,33 +43,22 @@ public class MainActivity extends BaseActivity implements SpeechSynthesizerListe
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+        SPKit.getInstance().initSharedPreferences(this);
         initPermission();
+        ButterKnife.bind(this);
         startTTS();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Log.e("lxl", "set tag");
-                main.setTag("aaa");
-            }
-        }, 2000);
+//        handler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                Log.e("lxl", "set tag");
+//                main.setTag("aaa");
+//            }
+//        }, 2000);
 
-        btnTest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // 获取语音合成授权信息
-                AuthInfo authInfo = mSpeechSynthesizer.auth(TtsMode.MIX);
-                if (authInfo.isSuccess()) {
-                    mSpeechSynthesizer.initTts(TtsMode.MIX);
-                    mSpeechSynthesizer.speak("1385948792526");
-                } else {
-                    Toast.makeText(MainActivity.this,"授权失败",Toast.LENGTH_LONG).show();
-                }
-            }
-        });
+        btnTest.setOnClickListener(v -> mSpeechSynthesizer.speak("1385948792526"));
     }
     // 语音合成客户端
-    private SpeechSynthesizer mSpeechSynthesizer;
+    public static SpeechSynthesizer mSpeechSynthesizer;
     // 初始化语音合成客户端并启动
     private void startTTS() {
         // 获取语音合成对象实例
@@ -90,16 +80,14 @@ public class MainActivity extends BaseActivity implements SpeechSynthesizerListe
         // 设置语音合成声音授权文件
         //mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_LICENCE_FILE, "your_licence_path");
         // 获取语音合成授权信息
-        AuthInfo authInfo = mSpeechSynthesizer.auth(TtsMode.ONLINE);
+        AuthInfo authInfo = mSpeechSynthesizer.auth(TtsMode.MIX);
         // 判断授权信息是否正确，如果正确则初始化语音合成器并开始语音合成，如果失败则做错误处理
         if (authInfo.isSuccess()) {
             mSpeechSynthesizer.initTts(TtsMode.MIX);
-            mSpeechSynthesizer.speak("1385948792526");
         } else {
             // 授权失败
             Toast.makeText(this,"auth failed!!",Toast.LENGTH_LONG).show();
         }
-
     }
 
     public void onError(String arg0, SpeechError arg1) {
@@ -133,17 +121,23 @@ public class MainActivity extends BaseActivity implements SpeechSynthesizerListe
     protected void onResume() {
         super.onResume();
 
-        startActivity(new Intent(this, SettingActivity.class));
-        finish();
+//        startActivity(new Intent(this, SettingActivity.class));
+//        finish();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         handler.removeCallbacksAndMessages(null);
-        main = null;
+//        main = null;
         Log.e("lxl", "destroy");
     }
+
     /**
      * android 6.0 以上需要动态申请权限
      */
@@ -162,12 +156,34 @@ public class MainActivity extends BaseActivity implements SpeechSynthesizerListe
             }
         }
         String tmpList[] = new String[toApplyList.size()];
-        if (!toApplyList.isEmpty()){
-            ActivityCompat.requestPermissions(this, toApplyList.toArray(tmpList), 123);
+        // Should we show an explanation?
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                Manifest.permission.READ_CONTACTS)) {
+
+            // Show an expanation to the user *asynchronously* -- don't block
+            // this thread waiting for the user's response! After the user
+            // sees the explanation, try again to request the permission.
+
+            Log.d("lxltest","shouldShowRequestPermissionRationale");
+        } else {
+
+            // No explanation needed, we can request the permission.
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_CONTACTS},
+                    123);
+            // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+            // app-defined int constant. The callback method gets the
+            // result of the request.
         }
+//        if (!toApplyList.isEmpty()){
+//            ActivityCompat.requestPermissions(this, permissions, 123);
+//        }
+
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         // 此处为android 6.0以上动态授权的回调，用户自行实现。
+        Log.d("lxltest","grantResults : "+grantResults.length);
     }
 }

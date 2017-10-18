@@ -15,14 +15,36 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-                <action android:name="com.baidu.action.RECOGNIZE_SPEECH" />
                 <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="com.baidu.action.RECOGNIZE_SPEECH" />
             </intent-filter>
         </activity>
 
         <activity android:name=".ui.activity.SettingActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+        </activity>
+        <service android:name=".service.FloatWindowService"/>
 
+        <service
+            android:name=".service.NotificationService"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" >
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" >
+                </action>
+            </intent-filter>
+        </service>
+
+        <!--<receiver android:name=".PhoneReceiver">-->
+            <!--<intent-filter android:priority="1000">-->
+                <!--<action android:name="android.intent.action.NEW_OUTGOING_CALL"/>-->
+                <!--<action android:name="android.intent.action.PHONE_STATE"/>-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
+        <!--<receiver android:name=".SmsReciver" >-->
+            <!--<intent-filter android:priority="999">-->
+                <!--<action android:name="android.provider.Telephony.SMS_RECEIVED" />-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
         <!-- begin: baidu speech sdk-->
         <!-- 请填写应用实际的APP_ID -->
         <meta-data android:name="com.baidu.speech.APP_ID" android:value="10045784"/>
@@ -31,33 +53,6 @@
         <!-- 请填写应用实际的SECRET_KEY -->
         <meta-data android:name="com.baidu.speech.SECRET_KEY" android:value="86376826e9662758703b8a32d260e290"/>
         <!--<service android:name="com.baidu.speech.VoiceRecognitionService" android:exported="false" ></service>-->
-
-        <uses-permission android:name="android.permission.INTERNET" />
-        <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-        <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-        <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-        <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-        <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-        <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-        <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-        <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-
-        <uses-permission android:name="android.permission.RECORD_AUDIO" />
-        <uses-permission android:name="android.permission.INTERNET" />
-        <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-        <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-        <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-        <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-        <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
-        <!-- begin: baidu speech sdk-->
-        <!-- 请填写应用实际的APP_ID -->
-        <meta-data android:name="com.baidu.speech.APP_ID" android:value="10045784"/>
-        <!-- 请填写应用实际的API_KEY -->
-        <meta-data android:name="com.baidu.speech.API_KEY" android:value="mlq0DyIA3ydUYxzLSIeKyCHS"/>
-        <!-- 请填写应用实际的SECRET_KEY -->
-        <meta-data android:name="com.baidu.speech.SECRET_KEY" android:value="86376826e9662758703b8a32d260e290"/>
-        <!--<service android:name="com.baidu.speech.VoiceRecognitionService" android:exported="false" />-->
 
         <!--**************************HW push start***********************-->
         <!-- value的值“appid”用实际申请的应用ID替换 -->
@@ -82,17 +77,6 @@
         android:authorities="com.liuxl.godriving.update.provider"
         android:exported="false"
         android:grantUriPermissions="true"/>
-        <!--HMS-SDK引导升级HMS功能，访问OTA服务器需要网络权限-->
-        <uses-permission android:name="android.permission.INTERNET" />
-        <!--HMS-SDK引导升级HMS功能，保存下载的升级包需要SD卡写权限-->
-        <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-        <!--检测网络状态-->
-        <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-        <!--检测wifi状态-->
-        <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-        <!--为了获取用户手机的IMEI，用来唯一的标识用户。-->
-        <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-
         <!-- 用来接收广播信息 xxx.xx.xx为CP自定义的广播名称，比如: com.huawei.hmssample. HuaweiPushRevicer -->
         <receiver android:name=".service.HWReceiver" >
             <intent-filter>
@@ -113,8 +97,28 @@
                 <action android:name="com.huawei.intent.action.PUSH" />
             </intent-filter>
         </receiver>
-
         <!--*********************HW push end*************************-->
     </application>
+    <!--HMS-SDK引导升级HMS功能，访问OTA服务器需要网络权限-->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!--HMS-SDK引导升级HMS功能，保存下载的升级包需要SD卡写权限-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!--检测网络状态-->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <!--检测wifi状态-->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <!--为了获取用户手机的IMEI，用来唯一的标识用户。-->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS"/>
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 </manifest>
