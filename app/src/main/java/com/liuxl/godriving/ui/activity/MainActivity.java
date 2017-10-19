@@ -47,6 +47,7 @@ public class MainActivity extends BaseActivity {
         SPKit.getInstance().initSharedPreferences(this);
         initPermission();
         ButterKnife.bind(this);
+        SPKit.getInstance().initSharedPreferences(this);
 
         startService(new Intent(this,SpeakerService.class));
         startService(new Intent(this,FloatWindowService.class));
