@@ -1,4 +1,4 @@
-package com.liuxl.godriving.EventBus;
+package com.liuxl.godriving.eventbus;
 
 /**
  * Created by Liuxl on 2017/10/19.

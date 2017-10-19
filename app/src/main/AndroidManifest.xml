@@ -24,6 +24,7 @@
             android:theme="@style/Theme.AppCompat.NoActionBar">
         </activity>
         <service android:name=".service.FloatWindowService"/>
+        <service android:name=".service.SpeakerService"/>
 
         <service
             android:name=".service.NotificationService"

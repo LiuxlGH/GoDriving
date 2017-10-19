@@ -8,11 +8,10 @@ import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.util.Log;
 
-import com.liuxl.godriving.EventBus.FloatWindowEvent;
-import com.liuxl.godriving.EventBus.RxBus;
-import com.liuxl.godriving.EventBus.SpeakerEvent;
 import com.liuxl.godriving.R;
-import com.liuxl.godriving.ui.activity.MainActivity;
+import com.liuxl.godriving.eventbus.FloatWindowEvent;
+import com.liuxl.godriving.eventbus.RxBus;
+import com.liuxl.godriving.eventbus.SpeakerEvent;
 
 
 /**

@@ -3,7 +3,6 @@ package com.liuxl.godriving.service;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
 
@@ -12,8 +11,8 @@ import com.baidu.tts.client.SpeechError;
 import com.baidu.tts.client.SpeechSynthesizer;
 import com.baidu.tts.client.SpeechSynthesizerListener;
 import com.baidu.tts.client.TtsMode;
-import com.liuxl.godriving.EventBus.RxBus;
-import com.liuxl.godriving.EventBus.SpeakerEvent;
+import com.liuxl.godriving.eventbus.RxBus;
+import com.liuxl.godriving.eventbus.SpeakerEvent;
 
 import io.reactivex.functions.Consumer;
 
@@ -37,7 +36,12 @@ public class SpeakerService extends Service implements SpeechSynthesizerListener
         RxBus.getDefault().register(SpeakerEvent.class, new Consumer() {
             @Override
             public void accept(Object o) throws Exception {
-                mSpeechSynthesizer.speak(((SpeakerEvent)o).getTxt());
+                SpeakerEvent event = (SpeakerEvent) o;
+                if (event.isStop()) {
+                    mSpeechSynthesizer.stop();
+                } else {
+                    mSpeechSynthesizer.speak(event.getTxt());
+                }
             }
         });
     }

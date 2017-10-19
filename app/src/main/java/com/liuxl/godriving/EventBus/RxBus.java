@@ -1,4 +1,4 @@
-package com.liuxl.godriving.EventBus;
+package com.liuxl.godriving.eventbus;
 
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
