@@ -37,7 +37,7 @@ public class SpeakerService extends Service implements SpeechSynthesizerListener
         RxBus.getDefault().register(SpeakerEvent.class, new Consumer() {
             @Override
             public void accept(Object o) throws Exception {
-                mSpeechSynthesizer.speak((String)o);
+                mSpeechSynthesizer.speak(((SpeakerEvent)o).getTxt());
             }
         });
     }

@@ -56,7 +56,7 @@ public class FloatWindowService extends Service {
         RxBus.getDefault().register(FloatWindowEvent.class, new Consumer() {
             @Override
             public void accept(Object o) throws Exception {
-                floatWindow.showInTopWindow(getApplicationContext(),(String) o);
+                floatWindow.showInTopWindow(getApplicationContext(),((FloatWindowEvent) o).getTxt());
             }
         });
     }
@@ -66,10 +66,10 @@ public class FloatWindowService extends Service {
         // TODO Auto-generated method stub
         super.onStart(intent, startId);
 
-        if (!SPKit.getInstance().getFloatWindowCMD()) {
-            return;
-        }
-        msg=intent.getStringExtra("txt");
+//        if (!SPKit.getInstance().getFloatWindowCMD()) {
+//            return;
+//        }
+//        msg=intent.getStringExtra("txt");
         wm = (WindowManager) getApplicationContext().getSystemService(
                 Context.WINDOW_SERVICE);
         WindowManager.LayoutParams params = new WindowManager.LayoutParams();
