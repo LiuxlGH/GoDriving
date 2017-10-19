@@ -25,7 +25,9 @@ import com.baidu.tts.client.TtsMode;
 import com.liuxl.godriving.EventBus.RxBus;
 import com.liuxl.godriving.EventBus.SpeakerEvent;
 import com.liuxl.godriving.R;
+import com.liuxl.godriving.service.FloatWindowService;
 import com.liuxl.godriving.service.NotificationService;
+import com.liuxl.godriving.service.SpeakerService;
 import com.liuxl.godriving.util.SPKit;
 
 import java.util.ArrayList;
@@ -52,6 +54,9 @@ public class MainActivity extends BaseActivity {
         SPKit.getInstance().initSharedPreferences(this);
         initPermission();
         ButterKnife.bind(this);
+
+        startService(new Intent(this,SpeakerService.class));
+        startService(new Intent(this,FloatWindowService.class));
 
         if (Build.VERSION.SDK_INT >= 23) {
             if(!Settings.canDrawOverlays(this)) {
