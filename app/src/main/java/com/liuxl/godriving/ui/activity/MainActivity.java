@@ -78,6 +78,7 @@ public class MainActivity extends BaseActivity {
 //            }
 //        }, 2000);
 
+        btnTest = (Button) findViewById(R.id.btnTest);
         btnTest.setOnClickListener(v -> RxBus.getDefault().post(new SpeakerEvent("123456")));
     }
 
