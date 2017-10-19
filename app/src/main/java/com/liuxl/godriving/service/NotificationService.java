@@ -8,6 +8,9 @@ import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.util.Log;
 
+import com.liuxl.godriving.EventBus.FloatWindowEvent;
+import com.liuxl.godriving.EventBus.RxBus;
+import com.liuxl.godriving.EventBus.SpeakerEvent;
 import com.liuxl.godriving.R;
 import com.liuxl.godriving.ui.activity.MainActivity;
 
@@ -44,7 +47,9 @@ public class NotificationService extends NotificationListenerService {
                 Intent floatIntent = new Intent(this,FloatWindowService.class);
                 floatIntent.putExtra("txt",text);
                 startService(floatIntent);
-                MainActivity.mSpeechSynthesizer.speak(text);
+                RxBus.getDefault().post(new SpeakerEvent(text));
+                RxBus.getDefault().post(new FloatWindowEvent(text));
+//                MainActivity.mSpeechSynthesizer.speak(text);
 //                SpeechControl.speak(text);
 //                Sender.broadcast(title+":: "+text);
                 break;
