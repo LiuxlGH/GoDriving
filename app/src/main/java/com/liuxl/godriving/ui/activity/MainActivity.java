@@ -30,6 +30,7 @@ import com.liuxl.godriving.eventbus.FloatWindowEvent;
 import com.liuxl.godriving.eventbus.RxBus;
 import com.liuxl.godriving.eventbus.SpeakerEvent;
 import com.liuxl.godriving.R;
+import com.liuxl.godriving.manager.SpeakerManager;
 import com.liuxl.godriving.service.FloatWindowService;
 import com.liuxl.godriving.service.NotificationService;
 import com.liuxl.godriving.service.SpeakerService;
@@ -39,6 +40,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 
 /**
@@ -74,8 +76,8 @@ public class MainActivity extends BaseActivity {
         initPermission();
         ButterKnife.bind(this);
         SPKit.getInstance().initSharedPreferences(this);
-
-        startService(new Intent(this,SpeakerService.class));
+        SpeakerManager.getInstance().init(this);
+//        startService(new Intent(this,SpeakerService.class));
 //        startService(new Intent(this,FloatWindowService.class));
 
         floatWindow = new FloatWindowControl();
@@ -84,7 +86,7 @@ public class MainActivity extends BaseActivity {
             public void accept(Object o) throws Exception {
                 floatWindow.showInTopWindow(MainActivity.this,((FloatWindowEvent) o).getTxt());
             }
-        });
+        }, AndroidSchedulers.mainThread());
 
         if (Build.VERSION.SDK_INT >= 23) {
             if(!Settings.canDrawOverlays(this)) {
@@ -133,6 +135,13 @@ public class MainActivity extends BaseActivity {
                 PendingIntent pIntent = PendingIntent.getActivity(MainActivity.this, 1, intent0,PendingIntent.FLAG_ONE_SHOT);
                 builder.setContentIntent(pIntent);
                 manager.notify(0, builder.build());
+            }
+        });
+        (findViewById(R.id.btnPermission)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
+                startActivity(intent);
             }
         });
     }
@@ -287,7 +296,7 @@ public class MainActivity extends BaseActivity {
                     public void onClick(View view) {
                         wm.removeView(txt);
                         txt = null;
-                        RxBus.getDefault().post(new SpeakerEvent(true));
+//                        RxBus.getDefault().post(new SpeakerEvent(true));
                     }
                 });
             }
