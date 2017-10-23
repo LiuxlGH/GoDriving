@@ -5,35 +5,31 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.liuxl.godriving.R;
 import com.liuxl.godriving.eventbus.FloatWindowEvent;
 import com.liuxl.godriving.eventbus.RxBus;
-import com.liuxl.godriving.eventbus.SpeakerEvent;
-import com.liuxl.godriving.R;
-import com.liuxl.godriving.manager.SpeakerManager;
-import com.liuxl.godriving.service.FloatWindowService;
+import com.liuxl.godriving.model.FloatWindowManager;
+import com.liuxl.godriving.model.SpeakerManager;
 import com.liuxl.godriving.service.NotificationService;
-import com.liuxl.godriving.service.SpeakerService;
+import com.liuxl.godriving.ui.fragment.MainNotiFragment;
 import com.liuxl.godriving.util.SPKit;
 
 import java.util.ArrayList;
@@ -55,6 +51,8 @@ public class MainActivity extends BaseActivity {
     Button btnTest;
 
     private static final int UPDATE_PIC = 0x100;
+    @BindView(R.id.spaceHolder)
+    LinearLayout spaceHolder;
     private int statusBarHeight;// 状态栏高度
     private Thread updateThread = null;
     private boolean viewAdded = false;// 透明窗体是否已经显示
@@ -63,7 +61,7 @@ public class MainActivity extends BaseActivity {
     TextView txt;
     private WindowManager.LayoutParams layoutParams;
     boolean isTxtUpdated = false;
-    FloatWindowControl floatWindow;
+    FloatWindowManager floatWindow;
 
     public boolean isPopup = true;
     String msg;
@@ -80,16 +78,22 @@ public class MainActivity extends BaseActivity {
 //        startService(new Intent(this,SpeakerService.class));
 //        startService(new Intent(this,FloatWindowService.class));
 
-        floatWindow = new FloatWindowControl();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        MainNotiFragment notiFragment = MainNotiFragment.newInstance();
+        fragmentTransaction.add(notiFragment,"MainNoti");
+        fragmentTransaction.commitAllowingStateLoss();
+
+        floatWindow = new FloatWindowManager();
         RxBus.getDefault().register(FloatWindowEvent.class, new Consumer() {
             @Override
             public void accept(Object o) throws Exception {
-                floatWindow.showInTopWindow(MainActivity.this,((FloatWindowEvent) o).getTxt());
+                floatWindow.showInTopWindow(MainActivity.this, ((FloatWindowEvent) o).getTxt());
             }
         }, AndroidSchedulers.mainThread());
 
         if (Build.VERSION.SDK_INT >= 23) {
-            if(!Settings.canDrawOverlays(this)) {
+            if (!Settings.canDrawOverlays(this)) {
                 Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
                 startActivity(intent);
                 return;
@@ -101,10 +105,10 @@ public class MainActivity extends BaseActivity {
         }
 
         PackageManager pm = getPackageManager();
-        pm.setComponentEnabledSetting(new ComponentName(this,NotificationService.class),
-                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,PackageManager.DONT_KILL_APP);
-        pm.setComponentEnabledSetting(new ComponentName(this,NotificationService.class),
-                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,PackageManager.DONT_KILL_APP);
+        pm.setComponentEnabledSetting(new ComponentName(this, NotificationService.class),
+                PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+        pm.setComponentEnabledSetting(new ComponentName(this, NotificationService.class),
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
 
 //        handler.postDelayed(new Runnable() {
 //            @Override
@@ -130,9 +134,9 @@ public class MainActivity extends BaseActivity {
                 builder.setSmallIcon(R.mipmap.ic_launcher);
                 builder.setContentTitle("滴滴");
                 builder.setContentText(text);
-                builder.setDefaults(Notification.DEFAULT_SOUND| Notification.DEFAULT_VIBRATE);
+                builder.setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
                 Intent intent0 = new Intent(MainActivity.this, SettingActivity.class);
-                PendingIntent pIntent = PendingIntent.getActivity(MainActivity.this, 1, intent0,PendingIntent.FLAG_ONE_SHOT);
+                PendingIntent pIntent = PendingIntent.getActivity(MainActivity.this, 1, intent0, PendingIntent.FLAG_ONE_SHOT);
                 builder.setContentIntent(pIntent);
                 manager.notify(0, builder.build());
             }
@@ -178,7 +182,7 @@ public class MainActivity extends BaseActivity {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
         };
         ArrayList<String> toApplyList = new ArrayList<String>();
-        for (String perm :permissions){
+        for (String perm : permissions) {
             if (PackageManager.PERMISSION_GRANTED != ContextCompat.checkSelfPermission(this, perm)) {
                 toApplyList.add(perm);
                 //进入到这里代表没有权限.
@@ -193,7 +197,7 @@ public class MainActivity extends BaseActivity {
             // this thread waiting for the user's response! After the user
             // sees the explanation, try again to request the permission.
 
-            Log.d("lxltest","shouldShowRequestPermissionRationale");
+            Log.d("lxltest", "shouldShowRequestPermissionRationale");
         } else {
 
             // No explanation needed, we can request the permission.
@@ -210,10 +214,11 @@ public class MainActivity extends BaseActivity {
 //        }
 
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         // 此处为android 6.0以上动态授权的回调，用户自行实现。
-        Log.d("lxltest","grantResults : "+grantResults.length);
+        Log.d("lxltest", "grantResults : " + grantResults.length);
     }
 
 //    public void onClick(View v){
@@ -251,56 +256,4 @@ public class MainActivity extends BaseActivity {
 //                break;
 //
 //        }
-
-    class FloatWindowControl {
-        WindowManager wm;
-        TextView txt;
-        boolean isTxtUpdated = false;
-
-
-        public FloatWindowControl() {
-        }
-
-        public void showInTopWindow(Context context, String msg) {
-            wm = (WindowManager) getSystemService(
-                    Context.WINDOW_SERVICE);
-            WindowManager.LayoutParams params = new WindowManager.LayoutParams();
-            params = new WindowManager.LayoutParams(
-                    WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT, 0, 0,
-                    PixelFormat.TRANSPARENT);
-            params.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
-                    | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                    | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED;
-            params.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
-//        params.gravity = Gravity.TOP;
-//        params.y = 30;
-            isTxtUpdated = false;
-            if (txt != null) {
-                txt.setText(msg);
-                isTxtUpdated = true;
-            } else {
-                txt = new TextView(MainActivity.this);
-                txt.setText(msg);
-                txt.setPadding(20, 30, 30, 20);
-                txt.setTextColor(getResources().getColor(android.R.color.white));
-                txt.getPaint().setFakeBoldText(true);
-                txt.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
-                TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0f,
-                        Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, -1.0f,
-                        Animation.RELATIVE_TO_SELF, 0f);
-                animation.setDuration(500);
-                txt.startAnimation(animation);
-                wm.addView(txt, params);
-                txt.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        wm.removeView(txt);
-                        txt = null;
-//                        RxBus.getDefault().post(new SpeakerEvent(true));
-                    }
-                });
-            }
-
-        }
-    }
 }

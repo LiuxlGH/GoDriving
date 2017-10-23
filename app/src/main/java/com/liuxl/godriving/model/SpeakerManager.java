@@ -1,6 +1,7 @@
-package com.liuxl.godriving.manager;
+package com.liuxl.godriving.model;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.baidu.tts.auth.AuthInfo;
 import com.baidu.tts.client.SpeechError;
@@ -24,11 +25,12 @@ public class SpeakerManager implements SpeechSynthesizerListener {
             @Override
             public void accept(Object o) throws Exception {
                 SpeakerEvent event = (SpeakerEvent) o;
-//                if (event.isStop()) {
-//                    mSpeechSynthesizer.stop();
-//                } else {
+                Log.d("Speaker",event.getTxt()+"--"+event.isStop());
+                if (event.isStop()) {
+                    mSpeechSynthesizer.stop();
+                } else if(event.getTxt()!=null){
                     mSpeechSynthesizer.speak(event.getTxt());
-//                }
+                }
             }
         });
     }

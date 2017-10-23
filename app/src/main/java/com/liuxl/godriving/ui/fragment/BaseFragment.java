@@ -1,10 +1,11 @@
 package com.liuxl.godriving.ui.fragment;
 
-import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatDialogFragment;
 
 /**
  * Created by liuxl on 2017/8/23.
  */
 
-public class BaseFragment extends Fragment {
+public abstract class BaseFragment extends AppCompatDialogFragment {
+
 }
