@@ -1,6 +1,8 @@
 package com.liuxl.godriving.model;
 
 import android.content.Context;
+import android.os.Environment;
+import android.os.storage.StorageManager;
 import android.util.Log;
 
 import com.baidu.tts.auth.AuthInfo;
@@ -10,6 +12,17 @@ import com.baidu.tts.client.SpeechSynthesizerListener;
 import com.baidu.tts.client.TtsMode;
 import com.liuxl.godriving.eventbus.RxBus;
 import com.liuxl.godriving.eventbus.SpeakerEvent;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.functions.Consumer;
 
@@ -58,11 +71,15 @@ public class SpeakerManager implements SpeechSynthesizerListener {
         String your_secret_key = "86376826e9662758703b8a32d260e290";
         mSpeechSynthesizer.setApiKey(your_api_key, your_secret_key);
         // 设置离线语音合成授权，需要填入从百度语音官网申请的app_id
-//        mSpeechSynthesizer.setAppId("10045784");
+        mSpeechSynthesizer.setAppId("10045784");
+
+        String speechPath = getPath("bd_etts_ch_speech_female.dat");
+        String textPath = getPath("bd_etts_ch_text.dat");
+        mSpeechSynthesizer.loadModel(speechPath,textPath);
         // 设置语音合成文本模型文件
-        //mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_TEXT_MODEL_FILE, "your_txt_file_path");
+        mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_TEXT_MODEL_FILE, textPath);
         // 设置语音合成声音模型文件
-        //mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_SPEECH_MODEL_FILE, "your_speech_file_path");
+        mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_SPEECH_MODEL_FILE, speechPath);
         // 设置语音合成声音授权文件
         //mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_LICENCE_FILE, "your_licence_path");
         // 获取语音合成授权信息
@@ -101,5 +118,85 @@ public class SpeakerManager implements SpeechSynthesizerListener {
 
     public void onSynthesizeStart(String arg0) {
         // 监听到合成开始，在此添加相关操作
+    }
+
+    /**
+     * 获取内置SD卡路径
+     * @return
+     */
+    public String getInnerSDCardPath() {
+        return Environment.getExternalStorageDirectory().getPath();
+    }
+
+    String getPath(String fileName){
+        File f = new File("storage/sdcard1/gd/bd_female/"+fileName);
+        if(f.exists()){
+            return "storage/sdcard1/gd/bd_female/"+fileName;
+        }else{
+            return null;
+        }
+    }
+
+    /**
+     * 获取外置SD卡路径
+     * @return  应该就一条记录或空
+     */
+    public List<String> getExtSDCardPath()
+    {
+        List<String> lResult = new ArrayList<String>();
+        try {
+            Runtime rt = Runtime.getRuntime();
+            Process proc = rt.exec("mount");
+            InputStream is = proc.getInputStream();
+            InputStreamReader isr = new InputStreamReader(is);
+            BufferedReader br = new BufferedReader(isr);
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (line.contains("extSdCard"))
+                {
+                    String [] arr = line.split(" ");
+                    String path = arr[1];
+                    File file = new File(path);
+                    if (file.isDirectory())
+                    {
+                        lResult.add(path);
+                    }
+                }
+            }
+            isr.close();
+        } catch (Exception e) {
+        }
+        return lResult;
+    }
+
+    private static String getStoragePath(Context mContext, boolean is_removale) {
+
+        StorageManager mStorageManager = (StorageManager) mContext.getSystemService(Context.STORAGE_SERVICE);
+        Class<?> storageVolumeClazz = null;
+        try {
+            storageVolumeClazz = Class.forName("android.os.storage.StorageVolume");
+            Method getVolumeList = mStorageManager.getClass().getMethod("getVolumeList");
+            Method getPath = storageVolumeClazz.getMethod("getPath");
+            Method isRemovable = storageVolumeClazz.getMethod("isRemovable");
+            Object result = getVolumeList.invoke(mStorageManager);
+            final int length = Array.getLength(result);
+            for (int i = 0; i < length; i++) {
+                Object storageVolumeElement = Array.get(result, i);
+                String path = (String) getPath.invoke(storageVolumeElement);
+                boolean removable = (Boolean) isRemovable.invoke(storageVolumeElement);
+                if (is_removale == removable) {
+                    return path;
+                }
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

@@ -45,8 +45,6 @@ import io.reactivex.functions.Consumer;
 
 public class MainActivity extends BaseActivity {
 
-    @BindView(R.id.main)
-    RecyclerView main;
     @BindView(R.id.btnTest)
     Button btnTest;
 
