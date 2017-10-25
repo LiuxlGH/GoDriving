@@ -32,6 +32,7 @@ import io.reactivex.functions.Consumer;
 
 public class SpeakerManager implements SpeechSynthesizerListener {
 
+    private final String TAG = "SpeakerManager";
     public void init(Context context){
         startTTS(context);
         RxBus.getDefault().register(SpeakerEvent.class, new Consumer() {
@@ -72,10 +73,10 @@ public class SpeakerManager implements SpeechSynthesizerListener {
         mSpeechSynthesizer.setApiKey(your_api_key, your_secret_key);
         // 设置离线语音合成授权，需要填入从百度语音官网申请的app_id
         mSpeechSynthesizer.setAppId("10045784");
-
         String speechPath = getPath("bd_etts_ch_speech_female.dat");
         String textPath = getPath("bd_etts_ch_text.dat");
-        mSpeechSynthesizer.loadModel(speechPath,textPath);
+        int result = mSpeechSynthesizer.loadModel(speechPath,textPath);
+        mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_MIX_MODE,SpeechSynthesizer.MIX_MODE_HIGH_SPEED_NETWORK);
         // 设置语音合成文本模型文件
         mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_TEXT_MODEL_FILE, textPath);
         // 设置语音合成声音模型文件
@@ -106,18 +107,22 @@ public class SpeakerManager implements SpeechSynthesizerListener {
 
     public void onSpeechStart(String arg0) {
         // 监听到合成并播放开始，在此添加相关操作
+        Log.d(TAG,"onSpeechStart "+arg0 );
     }
 
     public void onSynthesizeDataArrived(String arg0, byte[] arg1, int arg2) {
         // 监听到有合成数据到达，在此添加相关操作
+        Log.d(TAG,"onSynthesizeDataArrived "+arg0 );
     }
 
     public void onSynthesizeFinish(String arg0) {
         // 监听到合成结束，在此添加相关操作
+        Log.d(TAG,"onSynthesizeFinish "+arg0 );
     }
 
     public void onSynthesizeStart(String arg0) {
         // 监听到合成开始，在此添加相关操作
+        Log.d(TAG,"onSynthesizeStart "+arg0 );
     }
 
     /**
