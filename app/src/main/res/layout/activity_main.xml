@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/settings"
-            android:background="null"/>
+            android:background="@null"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
