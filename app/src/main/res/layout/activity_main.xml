@@ -22,6 +22,12 @@
             android:layout_height="wrap_content"
             android:text="Permission"
             android:textColor="@android:color/white"/>
+        <ImageButton
+            android:id="@+id/ibtnSettings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/settings"
+            android:background="null"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"

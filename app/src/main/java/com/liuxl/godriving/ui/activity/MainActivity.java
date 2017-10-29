@@ -47,6 +47,8 @@ public class MainActivity extends BaseActivity {
 
     @BindView(R.id.btnTest)
     Button btnTest;
+    @BindView(R.id.ibtnSettings)
+    Button ibtnSettings;
 
     private static final int UPDATE_PIC = 0x100;
     @BindView(R.id.spaceHolder)
@@ -146,6 +148,8 @@ public class MainActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
+
+
     }
 
     @Override
