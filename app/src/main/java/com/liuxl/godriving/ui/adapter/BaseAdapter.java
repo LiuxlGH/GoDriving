@@ -6,7 +6,7 @@ import android.support.v7.widget.RecyclerView;
  * Created by Liuxl on 2017/10/26.
  */
 
-public abstract class BaseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+public abstract class BaseAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     private T[] ds;
     public void setData(T[] list){
@@ -19,5 +19,12 @@ public abstract class BaseAdapter extends RecyclerView.Adapter<RecyclerView.View
             return 0;
         }
         return ds.length;
+    }
+
+    T getItem(int position){
+        if(ds!=null&&ds.length>position) {
+            return ds[position];
+        }
+        return null;
     }
 }
