@@ -15,11 +15,11 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -47,12 +47,12 @@ public class MainActivity extends BaseActivity {
 
     @BindView(R.id.btnTest)
     Button btnTest;
-    @BindView(R.id.ibtnSettings)
-    Button ibtnSettings;
 
     private static final int UPDATE_PIC = 0x100;
     @BindView(R.id.spaceHolder)
     LinearLayout spaceHolder;
+    @BindView(R.id.ibtnSettings)
+    ImageButton ibtnSettings;
     private int statusBarHeight;// 状态栏高度
     private Thread updateThread = null;
     private boolean viewAdded = false;// 透明窗体是否已经显示
@@ -81,7 +81,7 @@ public class MainActivity extends BaseActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         MainNotiFragment notiFragment = MainNotiFragment.newInstance();
-        fragmentTransaction.add(notiFragment,"MainNoti");
+        fragmentTransaction.add(notiFragment, "MainNoti");
         fragmentTransaction.commitAllowingStateLoss();
 
         floatWindow = new FloatWindowManager();
@@ -148,8 +148,13 @@ public class MainActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
-
-
+        ibtnSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,SettingActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
