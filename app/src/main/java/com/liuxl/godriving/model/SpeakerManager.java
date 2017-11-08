@@ -1,7 +1,9 @@
 package com.liuxl.godriving.model;
 
+import android.app.Service;
 import android.content.Context;
 import android.os.Environment;
+import android.os.Vibrator;
 import android.os.storage.StorageManager;
 import android.util.Log;
 
@@ -43,7 +45,12 @@ public class SpeakerManager implements SpeechSynthesizerListener {
                 if (event.isStop()) {
                     mSpeechSynthesizer.stop();
                 } else if(event.getTxt()!=null){
-                    mSpeechSynthesizer.speak(event.getTxt());
+                    String txt = event.getTxt();
+                    if(txt.contains("关注")){
+                        Vibrator vib = (Vibrator) context.getSystemService(Service.VIBRATOR_SERVICE);
+                        vib.vibrate(200);
+                    }
+                    mSpeechSynthesizer.speak(txt);
                 }
             }
         });

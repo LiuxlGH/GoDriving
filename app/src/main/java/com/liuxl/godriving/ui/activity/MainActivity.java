@@ -45,9 +45,6 @@ import io.reactivex.functions.Consumer;
 
 public class MainActivity extends BaseActivity {
 
-    @BindView(R.id.btnTest)
-    Button btnTest;
-
     private static final int UPDATE_PIC = 0x100;
     @BindView(R.id.spaceHolder)
     LinearLayout spaceHolder;
@@ -118,36 +115,6 @@ public class MainActivity extends BaseActivity {
 //            }
 //        }, 2000);
 
-        btnTest = (Button) findViewById(R.id.btnTest);
-//        btnTest.setOnClickListener(v -> RxBus.getDefault().post(new SpeakerEvent("123456")));
-        btnTest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String text = "你好，小朋友, 好久不见，你已经长大了";
-//                Sender.broadcast(text);
-//                FloatWindowControl.showInTopWindow(text);
-//                SpeechControl.speak(text);
-
-                NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                Notification.Builder builder = new Notification.Builder(MainActivity.this);
-                builder.setAutoCancel(true);
-                builder.setSmallIcon(R.mipmap.ic_launcher);
-                builder.setContentTitle("滴滴");
-                builder.setContentText(text);
-                builder.setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
-                Intent intent0 = new Intent(MainActivity.this, SettingActivity.class);
-                PendingIntent pIntent = PendingIntent.getActivity(MainActivity.this, 1, intent0, PendingIntent.FLAG_ONE_SHOT);
-                builder.setContentIntent(pIntent);
-                manager.notify(0, builder.build());
-            }
-        });
-        (findViewById(R.id.btnPermission)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
-                startActivity(intent);
-            }
-        });
         ibtnSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
