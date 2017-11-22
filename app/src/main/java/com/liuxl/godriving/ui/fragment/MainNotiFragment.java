@@ -2,6 +2,7 @@ package com.liuxl.godriving.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -40,13 +41,18 @@ public class MainNotiFragment extends BaseFragment {
 
     @Override
     View getLayoutView(LayoutInflater inflater, @Nullable ViewGroup container) {
-        return inflater.inflate(R.layout.fragment_main_noti,container);
+        View view  = inflater.inflate(R.layout.fragment_main_noti,container);
+        rvMain = (RecyclerView) view.findViewById(R.id.rvMain);
+        GridLayoutManager mLayoutManager=new GridLayoutManager(getContext(),1, GridLayoutManager.VERTICAL,false);//设置为一个3列的纵向网格布局
+        rvMain.setLayoutManager(mLayoutManager);
+        return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mAdapter  = new NotiAdapter();
+        rvMain.setAdapter(mAdapter);
         RxBus.getDefault().register(SpeakerEvent.class, new Consumer() {
             @Override
             public void accept(Object o) throws Exception {
@@ -55,9 +61,16 @@ public class MainNotiFragment extends BaseFragment {
                 if (event.isStop()) {
                 } else if(event.getTxt()!=null){
                     String txt = event.getTxt();
-                    Arrays.copyOf(data,data.length+1);
 
-                    mAdapter.notifyItemInserted(0);
+                    if(data!=null) {
+                        String[] newData = Arrays.copyOf(data, data.length + 1);
+                        data = newData;
+                        data[data.length-1] = txt;
+                    }else{
+                        data= new String[]{txt};
+                    }
+                    mAdapter.setData(data);
+                    mAdapter.notifyDataSetChanged();
                 }
             }
         });

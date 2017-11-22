@@ -15,6 +15,7 @@ public class NotiAdapter extends BaseAdapter<String>{
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         TextView tv = new TextView(parent.getContext());
+        tv.setTextColor(parent.getContext().getResources().getColor(android.R.color.white));
         ViewHolder viewHolder = new ViewHolder(tv);
         return viewHolder;
     }

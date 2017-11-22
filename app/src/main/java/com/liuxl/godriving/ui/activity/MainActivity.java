@@ -15,11 +15,12 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageButton;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -45,11 +46,14 @@ import io.reactivex.functions.Consumer;
 
 public class MainActivity extends BaseActivity {
 
+    @BindView(R.id.btnTest)
+    Button btnTest;
+    @BindView(R.id.ibtnSettings)
+    Button ibtnSettings;
+
     private static final int UPDATE_PIC = 0x100;
     @BindView(R.id.spaceHolder)
-    LinearLayout spaceHolder;
-    @BindView(R.id.ibtnSettings)
-    ImageButton ibtnSettings;
+    FrameLayout spaceHolder;
     private int statusBarHeight;// 状态栏高度
     private Thread updateThread = null;
     private boolean viewAdded = false;// 透明窗体是否已经显示
@@ -78,7 +82,8 @@ public class MainActivity extends BaseActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         MainNotiFragment notiFragment = MainNotiFragment.newInstance();
-        fragmentTransaction.add(notiFragment, "MainNoti");
+        fragmentTransaction.add(R.id.spaceHolder,notiFragment);
+//        fragmentTransaction.show(notiFragment);
         fragmentTransaction.commitAllowingStateLoss();
 
         floatWindow = new FloatWindowManager();
@@ -115,13 +120,38 @@ public class MainActivity extends BaseActivity {
 //            }
 //        }, 2000);
 
-        ibtnSettings.setOnClickListener(new View.OnClickListener() {
+        btnTest = (Button) findViewById(R.id.btnTest);
+//        btnTest.setOnClickListener(v -> RxBus.getDefault().post(new SpeakerEvent("123456")));
+        btnTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,SettingActivity.class);
+                String text = "你好，小朋友, 好久不见，你已经长大了";
+//                Sender.broadcast(text);
+//                FloatWindowControl.showInTopWindow(text);
+//                SpeechControl.speak(text);
+
+                NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                Notification.Builder builder = new Notification.Builder(MainActivity.this);
+                builder.setAutoCancel(true);
+                builder.setSmallIcon(R.mipmap.ic_launcher);
+                builder.setContentTitle("滴滴");
+                builder.setContentText(text);
+                builder.setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
+                Intent intent0 = new Intent(MainActivity.this, SettingActivity.class);
+                PendingIntent pIntent = PendingIntent.getActivity(MainActivity.this, 1, intent0, PendingIntent.FLAG_ONE_SHOT);
+                builder.setContentIntent(pIntent);
+                manager.notify(0, builder.build());
+            }
+        });
+        (findViewById(R.id.btnPermission)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
                 startActivity(intent);
             }
         });
+
+
     }
 
     @Override
