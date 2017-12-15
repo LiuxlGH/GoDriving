@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import com.liuxl.godriving.R;
 import com.liuxl.godriving.eventbus.RxBus;
 import com.liuxl.godriving.eventbus.SpeakerEvent;
+import com.liuxl.godriving.ui.adapter.GDRecyclerItemDecoration;
 import com.liuxl.godriving.ui.adapter.NotiAdapter;
 
 import java.lang.reflect.Array;
@@ -41,10 +42,12 @@ public class MainNotiFragment extends BaseFragment {
 
     @Override
     View getLayoutView(LayoutInflater inflater, @Nullable ViewGroup container) {
-        View view  = inflater.inflate(R.layout.fragment_main_noti,container);
+        View view  = inflater.inflate(R.layout.fragment_main_noti,container,false);
         rvMain = (RecyclerView) view.findViewById(R.id.rvMain);
-        GridLayoutManager mLayoutManager=new GridLayoutManager(getContext(),1, GridLayoutManager.VERTICAL,false);//设置为一个3列的纵向网格布局
+        GridLayoutManager mLayoutManager=new GridLayoutManager(getContext(),1,
+                GridLayoutManager.VERTICAL,false);
         rvMain.setLayoutManager(mLayoutManager);
+        rvMain.addItemDecoration(new GDRecyclerItemDecoration());
         return view;
     }
 
@@ -70,7 +73,12 @@ public class MainNotiFragment extends BaseFragment {
                         data= new String[]{txt};
                     }
                     mAdapter.setData(data);
-                    mAdapter.notifyDataSetChanged();
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mAdapter.notifyItemInserted(0);
+                        }
+                    });
                 }
             }
         });

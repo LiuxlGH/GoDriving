@@ -4,6 +4,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center_horizontal"
+    android:paddingTop="20dp"
+    android:paddingStart="10dp"
+    android:paddingEnd="10dp"
     android:background="@color/black">
 
         <Button
@@ -13,7 +16,19 @@
             android:text="test"
             android:textColor="@android:color/white"/>
         <Button
-            android:id="@+id/btnPermission"
+            android:id="@+id/btnNotiPermission"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Permission"
+            android:textColor="@android:color/white"/>
+        <Button
+            android:id="@+id/btnPermissionMgmt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Permission"
+            android:textColor="@android:color/white"/>
+        <Button
+            android:id="@+id/btnProtectedPermission"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Permission"

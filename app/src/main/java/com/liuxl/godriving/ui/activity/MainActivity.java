@@ -46,11 +46,6 @@ import io.reactivex.functions.Consumer;
 
 public class MainActivity extends BaseActivity {
 
-    @BindView(R.id.btnTest)
-    Button btnTest;
-    @BindView(R.id.ibtnSettings)
-    Button ibtnSettings;
-
     private static final int UPDATE_PIC = 0x100;
     @BindView(R.id.spaceHolder)
     FrameLayout spaceHolder;
@@ -71,9 +66,8 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        SPKit.getInstance().initSharedPreferences(this);
         initPermission();
-        ButterKnife.bind(this);
+//        ButterKnife.bind(this);
         SPKit.getInstance().initSharedPreferences(this);
         SpeakerManager.getInstance().init(this);
 //        startService(new Intent(this,SpeakerService.class));
@@ -82,7 +76,7 @@ public class MainActivity extends BaseActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         MainNotiFragment notiFragment = MainNotiFragment.newInstance();
-        fragmentTransaction.add(R.id.spaceHolder,notiFragment);
+        fragmentTransaction.add(R.id.spaceHolder, notiFragment);
 //        fragmentTransaction.show(notiFragment);
         fragmentTransaction.commitAllowingStateLoss();
 
@@ -106,11 +100,11 @@ public class MainActivity extends BaseActivity {
             //绘ui代码,这里android6.0以下的系统直接绘出即可
         }
 
-        PackageManager pm = getPackageManager();
-        pm.setComponentEnabledSetting(new ComponentName(this, NotificationService.class),
-                PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
-        pm.setComponentEnabledSetting(new ComponentName(this, NotificationService.class),
-                PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+//        PackageManager pm = getPackageManager();
+//        pm.setComponentEnabledSetting(new ComponentName(this, NotificationService.class),
+//                PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+//        pm.setComponentEnabledSetting(new ComponentName(this, NotificationService.class),
+//                PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
 
 //        handler.postDelayed(new Runnable() {
 //            @Override
@@ -119,39 +113,9 @@ public class MainActivity extends BaseActivity {
 //                main.setTag("aaa");
 //            }
 //        }, 2000);
-
-        btnTest = (Button) findViewById(R.id.btnTest);
-//        btnTest.setOnClickListener(v -> RxBus.getDefault().post(new SpeakerEvent("123456")));
-        btnTest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String text = "你好，小朋友, 好久不见，你已经长大了";
-//                Sender.broadcast(text);
-//                FloatWindowControl.showInTopWindow(text);
-//                SpeechControl.speak(text);
-
-                NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                Notification.Builder builder = new Notification.Builder(MainActivity.this);
-                builder.setAutoCancel(true);
-                builder.setSmallIcon(R.mipmap.ic_launcher);
-                builder.setContentTitle("滴滴");
-                builder.setContentText(text);
-                builder.setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
-                Intent intent0 = new Intent(MainActivity.this, SettingActivity.class);
-                PendingIntent pIntent = PendingIntent.getActivity(MainActivity.this, 1, intent0, PendingIntent.FLAG_ONE_SHOT);
-                builder.setContentIntent(pIntent);
-                manager.notify(0, builder.build());
-            }
-        });
-        (findViewById(R.id.btnPermission)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
-                startActivity(intent);
-            }
-        });
-
-
+        findViewById(R.id.ibtnSettings).setOnClickListener(
+                v -> startActivity(new Intent(MainActivity.this,SettingActivity.class))
+        );
     }
 
     @Override

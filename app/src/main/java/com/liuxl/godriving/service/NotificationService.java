@@ -35,6 +35,9 @@ public class NotificationService extends NotificationListenerService {
             Log.d(TAG,"title: "+title);
             Log.d(TAG,"text: "+text);
             Log.d(TAG,"userId: "+userId);
+            for(String key :extras.keySet()){
+                Log.d(TAG, key +" : "+extras.get(key));
+            }
 
             String[] strs = getResources().getStringArray(R.array.arr);
             for(String str : strs){
@@ -43,9 +46,9 @@ public class NotificationService extends NotificationListenerService {
                 }
 
 //                FloatWindowControl.showInTopWindow(this,text);
-                Intent floatIntent = new Intent(this,FloatWindowService.class);
-                floatIntent.putExtra("txt",text);
-                startService(floatIntent);
+//                Intent floatIntent = new Intent(this,FloatWindowService.class);
+//                floatIntent.putExtra("txt",text);
+//                startService(floatIntent);
                 RxBus.getDefault().post(new SpeakerEvent(text));
                 RxBus.getDefault().post(new FloatWindowEvent(text));
 //                MainActivity.mSpeechSynthesizer.speak(text);
@@ -79,8 +82,8 @@ public class NotificationService extends NotificationListenerService {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        stopService(new
-                Intent(this,
-                FloatWindowService.class));
+//        stopService(new
+//                Intent(this,
+//                FloatWindowService.class));
     }
 }

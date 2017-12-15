@@ -10,18 +10,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="right">
-        <Button
-            android:id="@+id/btnTest"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="test"
-            android:textColor="@android:color/white"/>
-        <Button
-            android:id="@+id/btnPermission"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Permission"
-            android:textColor="@android:color/white"/>
         <ImageButton
             android:id="@+id/ibtnSettings"
             android:layout_width="wrap_content"
