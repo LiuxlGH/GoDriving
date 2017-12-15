@@ -23,6 +23,7 @@ public class NotiAdapter extends BaseAdapter<String>{
         line.setBackgroundResource(R.color.colorAccent);
         linearLayout.addView(line,new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,1));
         TextView tv = new TextView(parent.getContext());
+        tv.setPadding(10,10,10,10);
         tv.setBackgroundResource(R.color.black);
         tv.setTextColor(parent.getContext().getResources().getColor(android.R.color.white));
         linearLayout.addView(tv);
