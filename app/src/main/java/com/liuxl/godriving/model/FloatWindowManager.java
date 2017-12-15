@@ -24,7 +24,7 @@ public class FloatWindowManager {
     public void showInTopWindow(Context context, String msg) {
         wm = (WindowManager) context.getSystemService(
                 Context.WINDOW_SERVICE);
-        WindowManager.LayoutParams params = new WindowManager.LayoutParams();
+        WindowManager.LayoutParams params;
         params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT, 0, 0,
                 PixelFormat.TRANSPARENT);
@@ -51,14 +51,11 @@ public class FloatWindowManager {
             animation.setDuration(500);
             txt.startAnimation(animation);
             wm.addView(txt, params);
-            txt.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    wm.removeView(txt);
-                    txt = null;
-                    Log.d("Speaker","send stop command!!");
-                    RxBus.getDefault().post(new SpeakerEvent(true));
-                }
+            txt.setOnClickListener(view -> {
+                wm.removeView(txt);
+                txt = null;
+                Log.d("Speaker","send stop command!!");
+                RxBus.getDefault().post(new SpeakerEvent(true));
             });
         }
 
