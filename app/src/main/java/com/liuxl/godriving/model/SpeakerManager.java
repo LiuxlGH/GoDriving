@@ -35,11 +35,15 @@ import io.reactivex.functions.Consumer;
 public class SpeakerManager implements SpeechSynthesizerListener {
 
     private final String TAG = "SpeakerManager";
+    public static boolean isOpen=true;
     public void init(Context context){
         startTTS(context);
         RxBus.getDefault().register(SpeakerEvent.class, new Consumer() {
             @Override
             public void accept(Object o) throws Exception {
+                if(!isOpen){
+                    return;
+                }
                 SpeakerEvent event = (SpeakerEvent) o;
                 Log.d("Speaker",event.getTxt()+"--"+event.isStop());
                 if (event.isStop()) {

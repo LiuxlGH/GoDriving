@@ -19,18 +19,32 @@
             android:id="@+id/btnNotiPermission"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Permission"
+            android:text="Notification Permission"
             android:textColor="@android:color/white"/>
         <Button
             android:id="@+id/btnPermissionMgmt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Permission"
+            android:text="Permission Management"
             android:textColor="@android:color/white"/>
         <Button
             android:id="@+id/btnProtectedPermission"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Permission"
+            android:text="Protected APP Permission"
+            android:textColor="@android:color/white"/>
+        <Button
+            android:id="@+id/btnFloatWindow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Float Window"
+            android:textColor="@android:color/white"/>
+        <Button
+            android:id="@+id/btnSpeaker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Speaker"
             android:textColor="@android:color/white"/>
 </LinearLayout>

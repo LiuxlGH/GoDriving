@@ -1,5 +1,6 @@
 package com.liuxl.godriving.ui.activity;
 
+import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -13,6 +14,8 @@ import android.support.annotation.RequiresApi;
 import android.widget.Button;
 
 import com.liuxl.godriving.R;
+import com.liuxl.godriving.model.FloatWindowManager;
+import com.liuxl.godriving.model.SpeakerManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,6 +33,10 @@ public class SettingActivity extends BaseActivity {
     Button btnPermissionMgmt;
     @BindView(R.id.btnProtectedPermission)
     Button btnProtectedPermission;
+    @BindView(R.id.btnFloatWindow)
+    Button btnFloatWindow;
+    @BindView(R.id.btnSpeaker)
+    Button btnSpeaker;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -40,14 +47,18 @@ public class SettingActivity extends BaseActivity {
         checkPermission();
         btnTest.setOnClickListener(v -> doSendTest());
         btnNotiPermission.setOnClickListener(v -> goNotiPerssion());
-        btnPermissionMgmt.setOnClickListener(v->goMainager());
-        btnProtectedPermission.setOnClickListener(v->goProtect());
+        btnPermissionMgmt.setOnClickListener(v -> goMainager());
+        btnProtectedPermission.setOnClickListener(v -> goProtect());
+        btnFloatWindow.setText(FloatWindowManager.isOpen?"Off":"On");
+        btnFloatWindow.setOnClickListener(v->switchFloatWindow());
+        btnSpeaker.setText(SpeakerManager.isOpen?"Off":"On");
+        btnSpeaker.setOnClickListener(v->switchSpeakerStatus());
     }
 
     private void checkPermission() {
         if (Build.VERSION.SDK_INT >= 23) {
             int REQUEST_CODE_CONTACT = 101;
-            String[] permissions = {android.Manifest.permission.WRITE_EXTERNAL_STORAGE,android.Manifest.permission.READ_EXTERNAL_STORAGE};
+            String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
             for (String str : permissions) {
                 if (this.checkSelfPermission(str) != PackageManager.PERMISSION_GRANTED) {
                     this.requestPermissions(permissions, REQUEST_CODE_CONTACT);
@@ -102,5 +113,13 @@ public class SettingActivity extends BaseActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    private void switchFloatWindow(){
+        FloatWindowManager.isOpen=!FloatWindowManager.isOpen;
+        btnFloatWindow.setText(FloatWindowManager.isOpen?"Off":"On");
+    }
+    private void switchSpeakerStatus(){
+        SpeakerManager.isOpen=!SpeakerManager.isOpen;
+        btnSpeaker.setText(SpeakerManager.isOpen?"Off":"On");
     }
 }

@@ -62,23 +62,28 @@ public class MainNotiFragment extends BaseFragment {
                 SpeakerEvent event = (SpeakerEvent) o;
                 Log.d("Speaker",event.getTxt()+"--"+event.isStop());
                 if (event.isStop()) {
-                } else if(event.getTxt()!=null){
+                } else if(event.getTxt()!=null) {
                     String txt = event.getTxt();
 
-                    if(data!=null) {
+                    if (data != null) {
                         String[] newData = Arrays.copyOf(data, data.length + 1);
                         data = newData;
-                        data[data.length-1] = txt;
-                    }else{
-                        data= new String[]{txt};
+                        for (int i = data.length - 1; i > 0; i--) {
+                            data[i] = data[i - 1];
+                        }
+                        data[0] = txt;
+                    } else {
+                        data = new String[]{txt};
                     }
                     mAdapter.setData(data);
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
+                    getActivity().runOnUiThread(() -> {
+                        if (rvMain.getChildCount() + 1 < data.length) {
+                            mAdapter.notifyDataSetChanged();
+                        }else{
                             mAdapter.notifyItemInserted(0);
                         }
                     });
+
                 }
             }
         });

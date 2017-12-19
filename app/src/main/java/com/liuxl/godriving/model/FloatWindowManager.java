@@ -20,8 +20,12 @@ public class FloatWindowManager {
     WindowManager wm;
     TextView txt;
     boolean isTxtUpdated = false;
+    public static boolean isOpen=true;
 
     public void showInTopWindow(Context context, String msg) {
+        if(!isOpen){
+            return;
+        }
         wm = (WindowManager) context.getSystemService(
                 Context.WINDOW_SERVICE);
         WindowManager.LayoutParams params;
