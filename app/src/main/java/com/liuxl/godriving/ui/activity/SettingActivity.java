@@ -49,9 +49,9 @@ public class SettingActivity extends BaseActivity {
         btnNotiPermission.setOnClickListener(v -> goNotiPerssion());
         btnPermissionMgmt.setOnClickListener(v -> goMainager());
         btnProtectedPermission.setOnClickListener(v -> goProtect());
-        btnFloatWindow.setText(FloatWindowManager.isOpen?"Off":"On");
+        btnFloatWindow.setText(FloatWindowManager.isOpen?formatString(R.string.txt_float_window,"Off"):formatString(R.string.txt_float_window,"On"));
         btnFloatWindow.setOnClickListener(v->switchFloatWindow());
-        btnSpeaker.setText(SpeakerManager.isOpen?"Off":"On");
+        btnSpeaker.setText(SpeakerManager.isOpen?formatString(R.string.txt_speaker,"Off"):formatString(R.string.txt_speaker,"On"));
         btnSpeaker.setOnClickListener(v->switchSpeakerStatus());
     }
 
@@ -116,10 +116,14 @@ public class SettingActivity extends BaseActivity {
     }
     private void switchFloatWindow(){
         FloatWindowManager.isOpen=!FloatWindowManager.isOpen;
-        btnFloatWindow.setText(FloatWindowManager.isOpen?"Off":"On");
+        btnFloatWindow.setText(FloatWindowManager.isOpen?formatString(R.string.txt_float_window,"Off"):formatString(R.string.txt_float_window,"On"));
     }
     private void switchSpeakerStatus(){
         SpeakerManager.isOpen=!SpeakerManager.isOpen;
-        btnSpeaker.setText(SpeakerManager.isOpen?"Off":"On");
+        btnSpeaker.setText(SpeakerManager.isOpen?formatString(R.string.txt_speaker,"Off"):formatString(R.string.txt_speaker,"On"));
+    }
+
+    private String formatString(int resId, String value){
+        return String.format(getString(resId),value);
     }
 }

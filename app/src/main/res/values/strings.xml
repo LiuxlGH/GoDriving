@@ -3,6 +3,9 @@
     <string name="didi">滴滴</string>
     <string name="dida">嘀嗒</string>
 
+    <string name="txt_float_window">Float Window %1$s</string>
+    <string name="txt_speaker">Speaker %1$s</string>
+
     <array name="arr">
         <item>@string/dida</item>
         <item>@string/didi</item>
