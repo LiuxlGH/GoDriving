@@ -55,13 +55,13 @@ public class FloatWindowManager {
             animation.setDuration(500);
             txt.startAnimation(animation);
             wm.addView(txt, params);
-            txt.setOnClickListener(view -> {
-                wm.removeView(txt);
-                txt = null;
-                Log.d("Speaker","send stop command!!");
-                RxBus.getDefault().post(new SpeakerEvent(true));
-            });
         }
+        txt.setOnClickListener(view -> {
+            wm.removeView(txt);
+            txt = null;
+            Log.d("Speaker","send stop command!!");
+            RxBus.getDefault().post(new SpeakerEvent(true));
+        });
 
     }
 }

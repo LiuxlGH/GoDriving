@@ -2,8 +2,10 @@ package com.liuxl.godriving.service;
 
 import android.app.Notification;
 import android.app.PendingIntent;
+import android.app.Service;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.util.Log;
@@ -51,6 +53,8 @@ public class NotificationService extends NotificationListenerService {
 //                startService(floatIntent);
                 RxBus.getDefault().post(new SpeakerEvent(text));
                 RxBus.getDefault().post(new FloatWindowEvent(text));
+                Vibrator vib = (Vibrator) getSystemService(Service.VIBRATOR_SERVICE);
+                vib.vibrate(50);
 //                MainActivity.mSpeechSynthesizer.speak(text);
 //                SpeechControl.speak(text);
 //                Sender.broadcast(title+":: "+text);
