@@ -2,7 +2,9 @@ package com.liuxl.godriving.model;
 
 import android.content.Context;
 import android.graphics.PixelFormat;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 
 import com.liuxl.godriving.eventbus.RxBus;
 import com.liuxl.godriving.eventbus.SpeakerEvent;
+import com.liuxl.godriving.ui.view.FocusedTextView;
 
 /**
  * Created by Liuxl on 2017/10/20.
@@ -26,7 +29,7 @@ public class FloatWindowManager {
         if(!isOpen){
             return;
         }
-        wm = (WindowManager) context.getSystemService(
+        wm = (WindowManager) context.getApplicationContext().getSystemService(
                 Context.WINDOW_SERVICE);
         WindowManager.LayoutParams params;
         params = new WindowManager.LayoutParams(
@@ -36,19 +39,22 @@ public class FloatWindowManager {
                 | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                 | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED;
         params.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
-//        params.gravity = Gravity.TOP;
-//        params.y = 30;
+        params.format = PixelFormat.TRANSLUCENT;
+        params.gravity = Gravity.TOP;
+        params.y = 30;
         isTxtUpdated = false;
         if (txt != null) {
             txt.setText(msg);
             isTxtUpdated = true;
         } else {
-            txt = new TextView(context);
+            txt = new FocusedTextView(context);
             txt.setText(msg);
             txt.setPadding(20, 30, 30, 20);
             txt.setTextColor(context.getResources().getColor(android.R.color.white));
             txt.getPaint().setFakeBoldText(true);
-            txt.setBackgroundColor(context.getResources().getColor(android.R.color.darker_gray));
+            txt.setSingleLine();
+            txt.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+//            txt.setBackgroundColor(context.getResources().getColor(android.R.color.darker_gray));
             TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0f,
                     Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, -1.0f,
                     Animation.RELATIVE_TO_SELF, 0f);
